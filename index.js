@@ -39,6 +39,7 @@ async function run() {
         const database = client.db("find-job");
         const userCollection = database.collection("users");
         const userLoginCollection = database.collection("login-user");
+        const jobCollection = database.collection("all-job");
       
 
         // post users
@@ -108,6 +109,30 @@ async function run() {
                 const result = await userLoginCollection.deleteOne(filter);
                 res.json(result)
             })
+
+
+                     // job post
+        app.post('/jobpost', async (req, res) => {
+            const body = req.body;
+            const result = await jobCollection.insertOne(body);
+            res.json(result)
+            
+        })
+
+            // get Login users
+            app.get('/jobpost', async (req, res) => {
+                const result = await jobCollection.find({}).toArray();
+                res.send(result)
+            })
+
+
+                // delete job post
+                app.delete('/jobpost', async (req, res) => {
+                    const id = req.query.id;
+                    const find = { _id: ObjectId(id) };
+                    const result = await jobCollection.deleteOne(find);
+                    res.json(result)
+                })
 
 
 
